@@ -1,0 +1,93 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "libcaer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1688768626,
+        "narHash": "sha256-YYz+THcK34ZpQ/m+Qx7sZra8KnVvKuU8tGoX7zdRRmg=",
+        "type": "tarball",
+        "url": "https://gitlab.com/inivation/dv/libcaer/-/archive/master/libcaer-master.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://gitlab.com/inivation/dv/libcaer/-/archive/master/libcaer-master.tar.gz"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1735291276,
+        "narHash": "sha256-NYVcA06+blsLG6wpAbSPTCyLvxD/92Hy4vlY9WxFI1M=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "634fd46801442d760e09493a794c4f15db2d0cbb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "openeb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728302859,
+        "narHash": "sha256-qgvs5REsP80BhKDYsSHnZN7VydKpKrQ2akmQ+J/rR+8=",
+        "owner": "prophesee-ai",
+        "repo": "openeb",
+        "rev": "0391df5ab3bea6d0aa2595a73ccee66a1d9c1093",
+        "type": "github"
+      },
+      "original": {
+        "owner": "prophesee-ai",
+        "ref": "5.0.0",
+        "repo": "openeb",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "libcaer": "libcaer",
+        "nixpkgs": "nixpkgs",
+        "openeb": "openeb"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
