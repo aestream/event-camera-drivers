@@ -4,16 +4,19 @@ C++ drivers wrapped in a Python library for interfacing with event-based cameras
 
 ## Features
 
-- Support for Prophesee event-based cameras via OpenEB
 - Support for iniVation DVS cameras via libcaer
 - Python bindings using nanobind
 - Cross-platform support (Linux, macOS, Windows)
+
+- Planned support for Prophesee event-based cameras via OpenEB (see issue #1)
 
 ## Installation
 
 ### From PyPI
 
-... Coming soon
+```bash
+pip install event-camera-drivers
+```
 
 ### From Source
 
