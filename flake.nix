@@ -137,7 +137,7 @@
             if [ ! -f .venv/.initialized ]; then
               echo "Installing development dependencies..."
               pip install -U pip
-              pip install scikit-build-core pytest build
+              pip install scikit-build-core pytest build setuptools_scm
               pip install nanobind --no-deps
               autoPatchelf .venv/
               touch .venv/.initialized

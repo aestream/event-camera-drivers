@@ -1,9 +1,18 @@
+from importlib.metadata import version, PackageNotFoundError
+
+import numpy as np
+import logging
+
 from _event_camera_drivers import (
     InivationCamera as InivationCameraDriver,
     Event,
 )
 
-import numpy as np
+
+try:
+    __version__ = version("event_camera_drivers")
+except PackageNotFoundError:
+    logging.error("event_camera_drivers is not installed properly")
 
 
 class InivationCamera:
