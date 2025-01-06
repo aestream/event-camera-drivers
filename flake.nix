@@ -19,8 +19,8 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        pythonEnv = pkgs.python311;
-        pyPkgs = pkgs.python311Packages;
+        pythonEnv = pkgs.python312;
+        pyPkgs = pkgs.python312Packages;
 
         openebPackage = pkgs.stdenv.mkDerivation {
           pname = "openeb";
