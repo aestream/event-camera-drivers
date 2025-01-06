@@ -151,7 +151,6 @@ public:
       handle = std::get<0>(found_device.value());
       resolution_x = std::get<1>(found_device.value());
       resolution_y = std::get<2>(found_device.value());
-      std::cout << "InivationCamera: Found device" << std::endl;
     } else {
       throw std::invalid_argument("No inivation device found.");
     }
