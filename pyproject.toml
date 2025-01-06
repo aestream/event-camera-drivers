@@ -6,6 +6,7 @@ build-backend = "scikit_build_core.build"
 name = "event_camera_drivers"
 dynamic = ["version"] # Read version from __init__.py
 description = "Python event camera drivers for Inivation and AEStream"
+readme = "README.md"
 authors = [
     { name = "Jens Egholm Pedersen", email = "jens@jepedersen.dk" }
 ]
@@ -16,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: C++"
 ]
+license = { file = "LICENSE" }
 dependencies = [ "nanobind>=2.4", "numpy>=1.35" ]
 
 [tool.scikit-build]
