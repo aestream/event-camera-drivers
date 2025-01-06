@@ -1,5 +1,5 @@
 #include "inivation.hpp"
-#include "prophesee.hpp"
+// #include "prophesee.hpp"
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
 #include <nanobind/stl/optional.h>
@@ -9,12 +9,12 @@
 
 namespace nb = nanobind;
 
-std::string_view get_available_cameras() {
-  return get_available_prophesee_cameras();
-}
+// std::string_view get_available_cameras() {
+//   return get_available_prophesee_cameras();
+// }
 
 NB_MODULE(_event_camera_drivers, m) {
-  m.def("available_cameras", &get_available_cameras);
+  // m.def("available_cameras", &get_available_cameras);
 
   nb::class_<Event>(m, "Event")
       .def_ro("t", &Event::t)
@@ -38,8 +38,8 @@ NB_MODULE(_event_camera_drivers, m) {
           e.discard_as_unraisable(__func__);
         } catch (const std::exception &e) {
           std::cerr << "Error getting events: " << e.what() << std::endl;
-          return std::vector<Event>();
         }
+        return std::vector<Event>();
         // nb::capsule owner(events, [](void *p) noexcept { delete (Event *)p; });
         // return nb::ndarray<nb::numpy, uint64_t, nb::ndim<1>>(
             // events, {self.get_buffer_size()}, owner, {sizeof(Event)});

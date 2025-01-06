@@ -26,8 +26,8 @@ if (NOT SKBUILD)
 endif()
 
 # Find dependencies
-find_package(OpenCV REQUIRED)
-find_package(MetavisionSDK COMPONENTS core stream REQUIRED)
+#find_package(OpenCV REQUIRED)
+#find_package(MetavisionSDK COMPONENTS core stream REQUIRED)
 find_package(libcaer REQUIRED)
 
 # Initialize lists for sources and libraries
@@ -56,7 +56,7 @@ if (${libcaer_FOUND})
 endif()
 
 # Find Python and nanobind
-find_package(Python 3.11 COMPONENTS Interpreter Development.Module REQUIRED)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 find_package(nanobind CONFIG REQUIRED)
 
 # Create the Python module using nanobind

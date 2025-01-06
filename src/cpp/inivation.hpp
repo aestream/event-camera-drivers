@@ -143,7 +143,7 @@ class InivationCamera {
   }
 
 public:
-  inline InivationCamera(uint32_t buffer_size = 1024)
+  inline InivationCamera(size_t buffer_size = 1024)
       : buffer_size(buffer_size) {
     std::optional<std::tuple<libcaer::devices::device *, size_t, size_t>>
         found_device = find_device();

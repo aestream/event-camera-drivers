@@ -34,14 +34,14 @@ pip install -e .
 Prerequisites:
 - CMake (3.16 or higher)
 - C++ compiler with C++17 support
-- Python 3.8 or higher
+- Python 3.9 or higher
 - OpenEB 5.0.0
 - libcaer
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/aestream/event-camera-drivers
+cd event-camera-drivers
 ```
 
 2. Create and activate a virtual environment:
@@ -63,9 +63,20 @@ pip install -e .
 ## Usage
 
 ```python
-import your_package
+import event_camera_drivers as evd
 
-# Example code here
+camera = evd.InivationCamera()
+for packet in camera:
+    print(packet)
+```
+
+Or, in conjuction with [Faery](https://github.com/aestream/faery) (read more in the [Faery documentation](https://aestream.github.io/faery/)):
+
+```python
+import faery
+
+faery.events_stream_from_inivation_camera()
+  ...
 ```
 
 ## Development
@@ -82,12 +93,6 @@ curl -L https://nixos.org/nix/install | sh
 3. Enter development environment:
 ```bash
 nix develop
-```
-
-### Running Tests
-
-```bash
-pytest
 ```
 
 ### Building Wheels
