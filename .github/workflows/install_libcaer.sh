@@ -4,7 +4,7 @@ set -e
 # Install dependencies based on OS
 if [ "$(uname)" == "Linux" ]; then
     yum update -y
-    yum install -y cmake pkgconfig libusbx-devel libgusb-devel
+    yum install -y cmake pkgconfig libusbx-devel libgusb-devel glibc-static
 elif [ "$(uname)" == "Darwin" ]; then
     brew install cmake pkg-config libusb
 elif [ "$(uname)" == "MINGW"* ] || [ "$(uname)" == "MSYS"* ]; then

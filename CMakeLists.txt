@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(event_camera_drivers)
+project(event_camera_drivers LANGUAGES C CXX)
 
 # Warn if the user invokes CMake directly
 if (NOT SKBUILD)
@@ -29,7 +29,6 @@ endif()
 #find_package(OpenCV REQUIRED)
 #find_package(MetavisionSDK COMPONENTS core stream REQUIRED)
 find_package(libcaer REQUIRED)
-set(BUILD_SHARED_LIBS OFF)
 
 # Initialize lists for sources and libraries
 set(driver_input_libraries "")
@@ -45,11 +44,11 @@ if (${MetavisionSDK_FOUND})
 endif()
 
 # Add libcaer if found
-if (${libcaer_FOUND})    
+if (${libcaer_FOUND})
     message(STATUS "Inivation dependencies (libcaer) found at ${libcaer_DIR}")
-    add_library(inivation STATIC src/cpp/inivation.hpp)
-    target_link_libraries(inivation PRIVATE libcaer::caer)
-    target_include_directories(inivation PRIVATE ${libcaer_INCLUDE_DIRS})
+    add_library(inivation INTERFACE src/cpp/inivation.hpp)
+    target_link_libraries(inivation INTERFACE libcaer::caer)
+    target_include_directories(inivation INTERFACE ${libcaer_INCLUDE_DIRS} )
     set_property(TARGET inivation PROPERTY LINKER_LANGUAGE CXX)
     list(APPEND driver_input_libraries inivation)
 endif()
@@ -65,7 +64,6 @@ nanobind_add_module(_event_camera_drivers
 target_link_libraries(_event_camera_drivers PRIVATE
     ${driver_input_libraries} # link the C++ libraries
 )
-target_include_directories(_event_camera_drivers PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/event_camera_drivers.cpp)
 
 # Install rules
 install(TARGETS _event_camera_drivers LIBRARY DESTINATION .)
