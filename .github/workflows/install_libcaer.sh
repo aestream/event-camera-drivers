@@ -19,6 +19,8 @@ if [ ! -d "libcaer" ]; then
     if [ "$(uname)" == "Darwin" ]; then
         cmake -S . -B build -DENABLE_OPENCV=0 -DENABLE_SERIALDEV=0 -DCMAKE_OSX_ARCHITECTURES=x86_64
     else
+        export CFLAGS="-D_DEFAULT_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE" # Ensure endian.h is included for linking
+        export CXXFLAGS="-D_DEFAULT_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE"
         cmake -S . -B build -DENABLE_OPENCV=0 -DENABLE_SERIALDEV=0
     fi
 else

@@ -121,6 +121,7 @@
             libcaerPackage
             pyPkgs.numpy
             autoPatchelfHook
+            act # GitHub Actions
           ];
 
           shellHook = ''
