@@ -73,8 +73,13 @@ static void inivation_signal_handler(int signal) {
 
 static void shutdownHandler(void *ptr) { inivation_shutdown_flag.store(true); }
 
+static const std::vector<Event> MOCK_EVENTS{
+  Event(1, 2, 3, true), Event(4, 5, 6, false), Event(7, 8, 9, true),
+};
+
 class InivationCamera {
   size_t buffer_size;
+  const bool is_mock;
   libcaer::devices::device *handle;
   std::unique_ptr<libcaer::events::EventPacketContainer> packet_container;
 
@@ -127,24 +132,12 @@ class InivationCamera {
     }
     this->packet_container = nullptr;
   }
-
-  inline void close() {
-    // Ensure that we're not actively reading events
-    std::lock_guard<std::mutex> lock(event_buffer_mutex);
-    try {
-      if (handle != nullptr) {
-        handle->dataStop();
-        delete handle;
-        handle = nullptr;
-      }
-    } catch (std::runtime_error &e) {
-      std::cerr << "Error stopping data stream: " << e.what() << std::endl;
-    }
-  }
-
 public:
-  inline InivationCamera(size_t buffer_size = 1024)
-      : buffer_size(buffer_size) {
+  inline InivationCamera(size_t buffer_size = 1024, bool mock = false)
+      : buffer_size(buffer_size), is_mock(mock) {
+    if (is_mock) {
+      return;
+    }
     std::optional<std::tuple<libcaer::devices::device *, size_t, size_t>>
         found_device = find_device();
     if (found_device.has_value()) {
@@ -187,6 +180,10 @@ public:
   }
 
   std::vector<Event> next() {
+    if (is_mock) {
+      auto copy(MOCK_EVENTS);
+      return copy;
+    }
     // Reserve space for buffer_size events
     std::vector<Event> event_buffer;
     event_buffer.reserve(this->buffer_size);
@@ -209,8 +206,27 @@ public:
       }
     } while (event_buffer_index < this->buffer_size);
     event_buffer_index = 0;
+
     return event_buffer;
   }
+
+  inline void close() {
+    if (is_mock) {
+      return;
+    }
+    // Ensure that we're not actively reading events
+    std::lock_guard<std::mutex> lock(event_buffer_mutex);
+    try {
+      if (handle != nullptr) {
+        handle->dataStop();
+        delete handle;
+        handle = nullptr;
+      }
+    } catch (std::runtime_error &e) {
+      std::cerr << "Error stopping data stream: " << e.what() << std::endl;
+    }
+  }
+
 
   size_t get_buffer_size() { return this->buffer_size; }
 

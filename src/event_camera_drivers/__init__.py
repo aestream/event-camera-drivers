@@ -14,6 +14,9 @@ try:
 except PackageNotFoundError:
     logging.error("event_camera_drivers is not installed properly")
 
+EVENTS_DTYPE: np.dtype = np.dtype(
+    [("t", "<u8"), ("x", "<u2"), ("y", "<u2"), (("p", "on"), "?")]
+)
 
 class InivationCamera:
     """
@@ -50,8 +53,7 @@ class InivationCamera:
             StopIteration: When the camera is no longer running.
         """
         if self.cam.is_running():
-            events = self.cam.next()
-            return np.asarray(events)
+            return np.frombuffer(self.cam.next(), dtype=EVENTS_DTYPE)
         else:
             raise StopIteration
 

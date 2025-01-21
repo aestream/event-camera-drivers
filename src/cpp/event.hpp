@@ -21,7 +21,8 @@ struct Event {
   
   Event(uint64_t t_, uint16_t x_, uint16_t y_, bool p_) noexcept
       : t(t_), x(x_), y(y_), p(p_) {}
-};
+
+} __attribute__((packed)); // Pack struct to 13 bytes
 
 // struct SharedEventQueue {
 //   std::queue<std::vector<Event>> queue;

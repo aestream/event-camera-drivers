@@ -8,15 +8,20 @@
 #include <nanobind/stl/tuple.h>
 
 namespace nb = nanobind;
+using namespace nb::literals;
 
 // std::string_view get_available_cameras() {
 //   return get_available_prophesee_cameras();
 // }
 
+#include <iomanip>
+
 NB_MODULE(_event_camera_drivers, m) {
   // m.def("available_cameras", &get_available_cameras);
 
   nb::class_<Event>(m, "Event")
+      .def(nb::init<uint64_t, uint16_t, uint16_t, bool>(),
+           nb::arg("t"), nb::arg("x"), nb::arg("y"), nb::arg("p"))
       .def_ro("t", &Event::t)
       .def_ro("x", &Event::x)
       .def_ro("y", &Event::y)
@@ -29,25 +34,28 @@ NB_MODULE(_event_camera_drivers, m) {
       });
 
   nb::class_<InivationCamera>(m, "InivationCamera")
-      .def(nb::init<size_t>(), nb::arg("buffer_size") = 1024)
+      .def(nb::init<size_t, bool>(), nb::arg("buffer_size") = 1024, nb::arg("mock") = false)
       .def("next", [](InivationCamera &self) {
-        try {
-          return self.next();
-        } catch (nb::python_error &e) {
-          std::cerr << "Error getting events: " << e.what() << std::endl;
-          e.discard_as_unraisable(__func__);
-        } catch (const std::exception &e) {
-          std::cerr << "Error getting events: " << e.what() << std::endl;
-        }
-        return std::vector<Event>();
-        // nb::capsule owner(events, [](void *p) noexcept { delete (Event *)p; });
-        // return nb::ndarray<nb::numpy, uint64_t, nb::ndim<1>>(
-            // events, {self.get_buffer_size()}, owner, {sizeof(Event)});
-        // return nb::ndarray<Event, nb::numpy,
-        // nb::shape<event_size>>(events.data()).cast();
+        auto events = self.next();
+        // We move the events to a new vector to ensure that the memory is
+        // managed by the capsule
+        auto* events_ptr = new std::vector<Event>(std::move(events));
+        nb::capsule owner(events_ptr, [](void *p) noexcept {
+            delete static_cast<std::vector<Event> *>(p);
+        });
+
+        auto bytes_ptr = reinterpret_cast<uint8_t *>(events_ptr->data());
+        
+        return nb::ndarray<nb::numpy, uint8_t, nb::ndim<1>>(
+            /* data    */ bytes_ptr,
+            /* shape   */ {events_ptr->size() * sizeof(Event)},
+            /* capsule */ owner,
+            /* stride  */ {1}
+        );
       })
       .def("resolution", &InivationCamera::get_resolution)
-      .def("is_running", &InivationCamera::is_running);
+      .def("is_running", &InivationCamera::is_running)
+      .def("close", &InivationCamera::close);
 
   // nb::class_<PropheseeCamera>(m, "PropheseeCamera")
   //     .def(nb::init<std::optional<std::string>,uint32_t>(),
